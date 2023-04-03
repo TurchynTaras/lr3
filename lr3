@@ -1,0 +1,60 @@
+#include <iostream>
+#include <cmath>
+#include <algorithm>
+#include <windows.h>
+using namespace std;
+
+double func(double x, double a, double b) {
+    if (x < 4.3) {
+        a = -2.5;
+    }
+    else if (x > 4.3) {
+        a = 15;
+    }
+    else {
+        a = 0;
+    }
+    return cos(pow(log10(a) / log10(3 * abs(x)), 1.0 / 5)) / exp(sqrt(a * x)) * pow(sin(b ), 2) * x;
+}
+
+int main() {
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    double a = 0, b = 2.6, x_start = -5.8, x_end = 10.6, x_step = 2.5;
+    int n = (int)((x_end - x_start) / x_step) + 1;
+    double* y = new double[n];
+
+    int cmp_count = 0, swap_count = 0;
+
+    for (int i = 0; i < n; i++) {
+        double x = x_start + i * x_step;
+        y[i] = func(x, a, b);
+    }
+
+    for (int i = 0; i < n - 1; i++) {
+        int min_index = i;
+        for (int j = i + 1; j < n; j++) {
+            cmp_count++;
+            if (y[j] < y[min_index]) {
+                min_index = j;
+            }
+        }
+        if (min_index != i) {
+            swap(y[i], y[min_index]);
+            swap_count++;
+        }
+    }
+
+    cout << "Посортованні значення y:" << endl;
+    for (int i = 0; i < n; i++) {
+        cout << y[i] << endl;
+    }
+
+    cout << "Кількість порівнянь: " << cmp_count << endl;
+    cout << "Кількість обмінів: " << swap_count << endl;
+
+    delete[] y;
+
+    return 0;
+}
+
